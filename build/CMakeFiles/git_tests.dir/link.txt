@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/git_tests.dir/tests.cpp.o CMakeFiles/git_tests.dir/main.cpp.o CMakeFiles/git_tests.dir/candle.cpp.o -o git_tests  /usr/lib/x86_64-linux-gnu/libgtest_main.a /usr/lib/x86_64-linux-gnu/libgtest.a
