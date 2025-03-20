@@ -58,3 +58,18 @@ TEST(CandleTest, FullSize_LargeCandle) {
     EXPECT_EQ(candle.full_size(), 150);
 }
 
+// Тесты для метода body_size
+TEST(CandleTest, BodySize_Normal) {
+    Candle candle(100, 110, 90, 105);
+    EXPECT_EQ(candle.body_size(), 5); 
+}
+
+TEST(CandleTest, BodySize_OnePoint) {
+    Candle candle(100, 100, 90, 100);  
+    EXPECT_EQ(candle.body_size(), 0);
+}
+
+TEST(CandleTest, BodySize_LargeBody) {
+    Candle candle(50, 200, 20, 150);
+    EXPECT_EQ(candle.body_size(), 100);  
+}
