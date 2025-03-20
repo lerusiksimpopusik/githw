@@ -32,8 +32,14 @@ jobs:
     - name: create build
       run: mkdir build
 
+    - name: cd build
+      run: cd build
+
     - name: cmake launch 
       run: cmake ..
+
+    - name: quit build
+      run: cd ..
       
     - name: Build
       # Build your program with the given configuration
