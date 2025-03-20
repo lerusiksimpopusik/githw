@@ -41,3 +41,20 @@ TEST(CandleTest, Contains_OutsideRange) {
     EXPECT_FALSE(candle.contains(85));
     EXPECT_FALSE(candle.contains(115));
 }
+
+// Тесты для метода full_size
+TEST(CandleTest, FullSize_Normal) {
+    Candle candle(100, 110, 90, 105);
+    EXPECT_EQ(candle.full_size(), 20);
+}
+
+TEST(CandleTest, FullSize_SmallCandle) {
+    Candle candle(100, 101, 99, 100);
+    EXPECT_EQ(candle.full_size(), 2);
+}
+
+TEST(CandleTest, FullSize_LargeCandle) {
+    Candle candle(100, 200, 50, 150);
+    EXPECT_EQ(candle.full_size(), 150);
+}
+
