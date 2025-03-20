@@ -90,3 +90,19 @@ TEST(CandleTest, IsRed_NoBody) {
     EXPECT_FALSE(candle.is_red());
 }
 
+
+// Тесты для метода is_green
+TEST(CandleTest, IsGreen_True) {
+    Candle candle(100, 110, 90, 105);
+    EXPECT_TRUE(candle.is_green());
+}
+
+TEST(CandleTest, IsGreen_False) {
+    Candle candle(110, 100, 90, 105);
+    EXPECT_FALSE(candle.is_green());
+}
+
+TEST(CandleTest, IsGreen_NoBody) {
+    Candle candle(100, 100, 90, 105);
+    EXPECT_TRUE(candle.is_green());
+}
