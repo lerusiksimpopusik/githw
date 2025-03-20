@@ -36,4 +36,4 @@ jobs:
 
       - name: Запуск тестов
         working-directory: ${{github.workspace}}/build
-        run: ctest --output-on-failure
+        run: ./git_tests
