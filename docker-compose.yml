@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    container_name: githw_app
+    volumes:
+      - test-output:/app/output
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    volumes:
+      - test-output:/usr/share/nginx/html
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  test-output:
