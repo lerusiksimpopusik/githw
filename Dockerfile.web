@@ -1,13 +1,15 @@
 FROM nginx:latest
 
-# Установка Docker CLI для получения логов
 RUN apt-get update && \
-    apt-get install -y docker.io
+    apt-get install -y curl wget ca-certificates && \
+    wget https://dl.k8s.io/release/stable.txt -O version.txt && \
+    KUBECTL_VERSION=$(cat version.txt) && \
+    wget https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -O kubectl && \
+    chmod +x kubectl && \
+    mv kubectl /usr/local/bin/kubectl
 
-# Копирование скрипта entrypoint и конфига Nginx
 COPY entrypoint.sh /entrypoint.sh
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 RUN chmod +x /entrypoint.sh
+RUN rm -f /usr/share/nginx/html/index.html
 
 ENTRYPOINT ["/entrypoint.sh"]
