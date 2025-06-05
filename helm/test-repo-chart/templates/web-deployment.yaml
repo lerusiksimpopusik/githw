@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: vchernodolya/githw-web:latest
+        volumeMounts:
+        - name: shared-storage
+          mountPath: /usr/share/nginx/html
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            while [ ! -f /usr/share/nginx/html/index.txt ]; do sleep 1; done;
+            sed 's/$/<br>/' /usr/share/nginx/html/index.txt > /usr/share/nginx/html/index.html;
+            nginx -g "daemon off;";
+      volumes:
+      - name: shared-storage
+        persistentVolumeClaim:
+          claimName: shared-pvc
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: log-reader-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: log-reader-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: log-reader-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: log-reader-role
+subjects:
+- kind: ServiceAccount
+  name: log-reader-sa

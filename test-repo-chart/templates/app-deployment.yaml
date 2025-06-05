@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: vchernodolya/githw-app:latest
+        command: ["sh", "-c"]
+        args:
+        - |
+          ./build/git_tests --gtest_color=no > /usr/share/nginx/html/index.txt 2>&1; sleep 300
+        volumeMounts:
+        - name: shared-storage
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: shared-storage
+        persistentVolumeClaim:
+          claimName: shared-pvc
