@@ -1,4 +1,4 @@
-# GitHub Actions workflow для CMake на одной платформе
+ # GitHub Actions workflow для CMake на одной платформе
 name: CMake on a single platform
 
 on:
