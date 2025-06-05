@@ -1,4 +1,5 @@
-name: Build, Test and Publish Helm chart
+ # GitHub Actions workflow для CMake на одной платформе
+name: CMake on a single platform
 
 on:
   push:
@@ -10,7 +11,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build-and-publish:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,18 +37,3 @@ jobs:
       - name: Запуск тестов
         working-directory: ${{github.workspace}}/build
         run: ./git_tests
-
-      - name: Установка Helm
-        uses: azure/setup-helm@v3
-
-      - name: Упаковка Helm-чарта
-        run: |
-          mkdir -p packaged-chart
-          helm package helm/test-repo-chart -d packaged-chart
-
-      - name: Публикация Helm-чарта в GitHub Releases
-        uses: softprops/action-gh-release@v1
-        with:
-          files: packaged-chart/*.tgz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
