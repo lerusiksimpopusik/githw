@@ -34,5 +34,9 @@ public:
 
 	bool is_green() const noexcept;
 	bool is_red() const noexcept;
+	
+	// Является ли свеча доджи (маленькое тело)
+	bool is_doji() const noexcept;
+
 
 };

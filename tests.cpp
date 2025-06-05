@@ -106,3 +106,12 @@ TEST(CandleTest, IsGreen_NoBody) {
     Candle candle(100, 100, 90, 105);
     EXPECT_TRUE(candle.is_green());
 }
+
+TEST(CandleTest, DetectsDoji)
+{
+	Candle doji(100.0, 105.0, 95.0, 100.5); // тело: 0.5, весь размер: 10
+	EXPECT_TRUE(doji.is_doji());
+
+	Candle normal(100.0, 110.0, 90.0, 108.0); // тело: 8.0, весь размер: 20
+	EXPECT_FALSE(normal.is_doji());
+}

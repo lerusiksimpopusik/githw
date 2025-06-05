@@ -51,3 +51,9 @@ bool Candle::is_red() const noexcept
 {
 	return close < open;
 }
+bool Candle::is_doji() const noexcept
+{
+	const double body = body_size();
+	const double full = full_size();
+	return full > 0 && (body / full) < 0.1;
+}
