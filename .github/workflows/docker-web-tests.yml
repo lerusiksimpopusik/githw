@@ -3,7 +3,7 @@ name: Docker Build, Push and Helm Chart Publish
 on:
   push:
     branches: [ "main" ]
-    tags: [ 'v*.*.*' ]  
+    tags: [ 'v*.*.*' ]  # Выполняется на пуш в main и при создании версий вида v1.2.3
 
 env:
   DOCKER_HUB_REPO: vchernodolya/githw
@@ -12,7 +12,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   
+      contents: write       # нужно для релиза
       packages: write
       id-token: write
 
@@ -60,6 +60,8 @@ jobs:
       - name: Create GitHub Release and Upload Chart
         uses: softprops/action-gh-release@v1
         with:
+          name: "Release ${{ github.ref_name }}"
+          tag_name: ${{ github.ref_name }}
           files: packaged-chart/*.tgz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
