@@ -1,9 +1,9 @@
-name: Docker Build and Push
+name: Docker Build, Push and Helm Chart Publish
 
 on:
   push:
     branches: [ "main" ]
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*.*' ]  # Выполняется на пуш в main и при создании версий вида v1.2.3
 
 env:
   DOCKER_HUB_REPO: vchernodolya/githw
@@ -12,7 +12,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write       # нужно для релиза
       packages: write
       id-token: write
 
@@ -48,3 +48,20 @@ jobs:
           tags: ${{ env.DOCKER_HUB_REPO }}-web:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+
+      - name: Package Helm chart
+        run: |
+          mkdir -p packaged-chart
+          helm package helm/test-repo-chart -d packaged-chart
+
+      - name: Create GitHub Release and Upload Chart
+        uses: softprops/action-gh-release@v1
+        with:
+          name: "Release ${{ github.ref_name }}"
+          tag_name: ${{ github.ref_name }}
+          files: packaged-chart/*.tgz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
